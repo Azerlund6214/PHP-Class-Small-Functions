@@ -327,12 +327,11 @@ class SF {
 		for ($i = 1; $i <= $max; $i++)
 		{
 			$random .= $c[rand(0,19)];
-			
-			if( $Big_first_char && $i === 1)
-				$random[0] = strtoupper( $random[0] );
-			
 			$random .= $v[rand(0,4)];
 		}
+		
+		if( $Big_first_char )
+				$random[0] = strtoupper( $random[0] );
 		
 		return $random; 
 	}
