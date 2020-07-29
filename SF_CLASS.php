@@ -6,18 +6,50 @@
  * @method static потом()
  */
 class SF {
-
+	
+	
+	
+	public static $alphabet_eng_big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static $alphabet_eng_sml = "abcdefghijklmnopqrstuvwxyz";
+	
+	public static $alphabet_rus_big = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+	public static $alphabet_rus_sml = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+	
+	public static $alphabet_nums = "0123456789";
+	
+	
+	
+	public static function Get_Random_String( $length = 10, $alphabet = "Default" )
+	{
+		
+		if ( $alphabet === "Default" )
+			$alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		
+		$strlength = strlen($alphabet);
+		
+		$random = '';
+		
+		# Альтернатива - $random = substr(str_shuffle($alphabet), 0, $length);
+		for ($i = 0; $i < $length; $i++)
+			$random .= $alphabet[rand(0, $strlength - 1)];
+		
+		return $random;
+	}
+	
+	
+	
+	
+	
 	/**
 	 * 
 	 * 
 	 */
 	
-	//public function getConnection() { }
 	/**
-	 * Описание
-	 * @param integer $
-	 * @param string $
-	 * @return string 
+	 * Шаблон
+	 * @param integer $ -
+	 * @param string $ -
+	 * @return string
 	 */
 	
 	
@@ -41,12 +73,16 @@ class SF {
 		switch( $MODE )
 		{
 			case "print_r": 
+			case "print": 
 			case "P": 
+			case "p": 
 							print_r( $Traget );
 							break;
 			
 			case "var_dump":
+			case "var":
 			case "V":
+			case "v":
 							var_dump( $Traget );
 							break;
 							

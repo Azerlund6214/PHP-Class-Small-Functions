@@ -4,6 +4,12 @@
 	require_once "SF_CLASS.php";
 	$SF_test = new SF();
 	
+	## WIP
+	
+	//echo SF::PRINTER( SF::Get_Random_String("25", "123") , "V");
+	
+	//exit("123");
+	##
 	
 	echo "Демо для SF_CLASS.php";
 	
@@ -36,6 +42,12 @@
 	echo '<hr>SF::PRINTER( SF::Get_Server_Headers("https://www.php.net/") ); - Получить заголовки сервера';
 	SF::PRINTER( SF::Get_Server_Headers("https://www.php.net/") );
 	
+	
+	echo '<hr>SF::PRINTER( SF::Get_Random_String( "20" ) ); - Получить случайный набор из 20 символов (англ буквы + цифры)';
+	echo SF::PRINTER( SF::Get_Random_String( "20" ) );
+	
+	echo '<hr>SF::PRINTER( SF::Get_Random_String( "20" , "Alphabet123" ) ); - Получить случайный набор из 20 символов (произвольный алфавит)';
+	SF::PRINTER( SF::Get_Random_String( "20" , "Alphabet123" ) );
 	
 	
 	
