@@ -19,27 +19,6 @@ class SF {
 	
 	
 	
-	public static function Get_Random_String( $length = 10, $alphabet = "Default" )
-	{
-		
-		if ( $alphabet === "Default" )
-			$alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		
-		$strlength = strlen($alphabet);
-		
-		$random = '';
-		
-		# Альтернатива - $random = substr(str_shuffle($alphabet), 0, $length);
-		for ($i = 0; $i < $length; $i++)
-			$random .= $alphabet[rand(0, $strlength - 1)];
-		
-		return $random;
-	}
-	
-	
-	
-	
-	
 	/**
 	 * 
 	 * 
@@ -304,7 +283,59 @@ class SF {
 	}
 	
 	
+	/**
+	 * Возвращает случайную строку заданной длинны состоящую из заданного алфавита.
+	 * @param integer $length - Длина желаемой строки
+	 * @param string $alphabet - Алфавит для генерации (есть дефолтный)
+	 */
+	public static function Get_Random_String( $length = 10, $alphabet = "Default" )
+	{
+		
+		if ( $alphabet === "Default" )
+			$alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		
+		srand((double)microtime()*1000000); # Увеличиваем рандомность
+		
+		$strlength = strlen($alphabet);
+		
+		$random = '';
+		
+		# Альтернатива - $random = substr(str_shuffle($alphabet), 0, $length);
+		for ($i = 0; $i < $length; $i++)
+			$random .= $alphabet[rand(0, $strlength - 1)];
+		
+		return $random;
+	}
 	
+	
+	/**
+	 * Возвращает случайную удобночитаемую строку заданной длинны. (алфавит - маленькие англ буквы)
+	 * @param integer $length - Длина желаемой строки
+	 * @param bool $alphabet - Делать ли первую букву заглавной
+	 */
+	public static function Get_Random_String_Readable ( $length = 10 , $Big_first_char = true )
+	{
+		$c = array('b','c','d','f','g','h','j','k','l','m','n','p','r','s','t','v','w','x','y','z');
+		$v = array('a','e','i','o','u');
+		
+		srand((double)microtime()*1000000); # Увеличиваем рандомность
+		
+		$max = $length / 2;
+		
+		$random = '';
+		
+		for ($i = 1; $i <= $max; $i++)
+		{
+			$random .= $c[rand(0,19)];
+			
+			if( $Big_first_char && $i === 1)
+				$random[0] = strtoupper( $random[0] );
+			
+			$random .= $v[rand(0,4)];
+		}
+		
+		return $random; 
+	}
 	
 	
 	
