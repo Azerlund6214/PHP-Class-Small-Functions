@@ -4,11 +4,16 @@
 	require_once "SF_CLASS.php";
 
 
+	function test($a=123)
+    {
 
-	SF::File_Create("filename.txt");
-	SF::File_Put("filename.txt" , "text_text");
+        SF::Echo_Call_Stack( true );
 
-	exit("123");
+    }
+
+test("12345");
+
+exit("123");
 
 
 	sleep(5);

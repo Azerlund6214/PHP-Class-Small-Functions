@@ -339,8 +339,64 @@ class SF {
 	}
 
 
+    /**
+     * Выводит полный стек вызовов функций
+     * TODO: Написать вывод присланных аргуменов
+     * @param bool $Exit_after_echo - Завершать ли работу после вывода
+     */
+    public static function Echo_Call_Stack( $Exit_after_echo = true )
+    {
+        # http://php.net/manual/ru/function.debug-backtrace.php
 
 
+        #SF::PRINTER(debug_backtrace());
+
+
+        $result = array();
+        foreach( debug_backtrace() as $one )
+        {
+            $text  = @$one['class'];
+            $text .= @$one['type'];
+            $text .= @$one['function'];
+            $text .= "( ";
+
+            $text .= "Аргументов: ".count(@$one['args']) ;
+
+            /*foreach ( @$one['args'] as $arg )
+            {
+                //echo "<br>".print_r($arg);
+                //$text .= var_dump($arg);
+                //$text .= "";
+            }*/
+
+            $text .= " )";
+
+            $result []= $text;
+        }
+
+
+        $result []= "Корень программы";
+        #SF::PRINTER($result);
+
+
+        $result = array_reverse($result);
+
+        # Прямо тут можно прописать Unset последнего элемента
+
+        $count_results = count($result);
+
+
+        for ( $i=0 ; $i < $count_results ; $i++ )
+        {
+            if($i!=0) echo "<br>";
+            echo str_repeat("- - ", $i+1 );
+            echo $result[$i];
+        }
+
+        if( $Exit_after_echo )
+            exit("<hr>Выход из Echo_Call_Stack");
+
+    }
 
 
 
