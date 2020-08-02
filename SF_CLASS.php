@@ -339,54 +339,12 @@ class SF {
 	}
 
 
-    /**
-     *
-     * @param $path_and_name - "/dir/dir2/filename.txt"
-     * @return bool
-     */
-	public static function File_Create123( $path_and_name )
-    {
-
-        if( substr_count( "/" , $path_and_name ) != 0 )
-        {
-
-        }
-
-        $buf = explode("/" , $path_and_name);
-
-        $filename = $buf[count($buf)-1];
-
-        echo $filename;
-
-
-        exit("12345");
-
-        if (is_dir($dir))
-        {
-            echo "Папка существует</br>"; // если есть такая папка
-        } else {
-            $prava = '777';
-            $dir = mkdir( rtrim( $_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$dir, $prava);
-            echo "сделали папку $a</br>";// если нет такой папки
-        }
 
 
 
 
-        if ( file_exists($path_and_name) ) //
-            return true;
 
 
-        $fp = fopen($path_and_name, 'w+'); // Создаем файл
-        fclose($fp);
-        exit("123");
-
-        $tmp = opendir($dir); // Открыли директорию
-        closedir($tmp); // Закрыли директорию
-
-
-
-    }
 
 
     public static function Dir_Create( $path )
@@ -409,11 +367,74 @@ class SF {
         return false;
     }
 
-    public static function File_Exist( $file_name )
+    /**
+     * Рукурсивно удаляет папку со всеми файлами внутри!
+     * Удаляет в том числе скрытые файлы (начинающиеся с точки)
+     * Удаляет ссылочные файлы не трогая файлы куда ведет ссылка
+     * @param $path - ФОРМАТ: "Папка1/Папка2" - МОЖНО слеш в конце
+     */
+    public static function Dir_Delete( $path )
     {
+        $includes = glob($path.'/{,.}*', GLOB_BRACE);
+        $systemDots = preg_grep('/\.+$/', $includes);
+
+        foreach ($systemDots as $index => $dot) {
+
+            unset($includes[$index]);
+        }
+
+        foreach ($includes as $include) {
+
+            if(is_dir($include) && !is_link($include)) {
+
+                SF::Dir_Delete($include);
+            }
+
+            else {
+
+                unlink($include);
+            }
+        }
+
+        rmdir($path);
 
 
     }
+
+    /**
+     * Рукурсивно удаляет папку со всеми файлами внутри!
+     * Удаляет в том числе скрытые файлы (начинающиеся с точки)
+     * Удаляет ссылочные файлы не трогая файлы куда ведет ссылка
+     * @param $path - ФОРМАТ: "Папка1/Папка2" - БЕЗ слешей по краям
+     */
+    public static function Dir_Delete_2( $path )
+    {
+
+        if( ! SF::Dir_Exist($path) )
+            return;
+
+        $includes = new FilesystemIterator($path); // Встроенная библиотека
+
+        foreach ($includes as $include)
+        {
+
+            if(is_dir($include) && !is_link($include))
+            {
+
+                SF::Dir_Delete($include);
+            }
+
+            else
+            {
+                unlink($include);
+            }
+        }
+
+        rmdir($path);
+
+    }
+
+
 
     public static function File_Create( $file_name )
     {
@@ -425,17 +446,39 @@ class SF {
 
     }
 
+    public static function File_Exist( $file_name )
+    {
+        if ( file_exists( $file_name) )
+            return true; // если есть такая папка
+
+        return false;
+
+    }
+
     public static function File_Clear( $file_name )
     {
         $fp = fopen($file_name, 'w+'); //
         fclose($fp);
     }
 
-    public static function File_Put( $file_name , $text )
+    public static function File_Put( $file_name , $text , $new_line = true)
     {
-        $fp = fopen($file_name, 'a'); //
+        $fp = fopen($file_name, 'a+'); //
+
+
         fwrite($fp, $text);
+
+        if($new_line)
+            fwrite($fp, PHP_EOL);
+
         fclose($fp);
+
+        /*
+            fwrite ($fp, "\n");
+            fwrite ($fp, "\r\n");
+            fwrite ($fp, chr(0x0a));
+            fwrite ($fp, PHP_EOL);
+        */
     }
 
     public static function File_Delete( $file_name )
