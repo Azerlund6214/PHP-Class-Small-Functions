@@ -3,9 +3,16 @@
 	
 	require_once "SF_CLASS.php";
 	$SF_test = new SF();
-	
-	SF::File_Create("filename.txt");
+
+    SF::Dir_Exist("123/12");
+
+
+    exit("123");
+
+	SF::File_Create("1/filename.txt");
 	SF::File_Put("filename.txt" , "texttext");
+
+
 
 	sleep(5);
 
