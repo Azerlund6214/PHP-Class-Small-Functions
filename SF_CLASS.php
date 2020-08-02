@@ -262,7 +262,7 @@ class SF {
 	/**
 	 * Получить заголовки с любого сервера
 	 * @param string $URL = адрес сайта, Обязательно с протоколом!
-	 * @return string = 3-значный код ответа "404" ,  integer = -1(если ошибка)
+	 * @return string = 3-значный код ответа "404" и тд ,  bool = false (если ошибка)
 	 */
 	public static function Get_HTTP_Response( $URL = "https://yandex.ru" )
 	{
@@ -276,7 +276,7 @@ class SF {
 		$Answer = @get_headers( $URL , 1 ); # Без 1 будет не асоциативный(Все в кучу)
 		
 		if( empty($Answer) )
-			return -1;
+			return false;
 		
 		return substr($Answer[0], 9, 3 ); // HTTP/1.1 404 Not Found
 		
@@ -287,6 +287,7 @@ class SF {
 	 * Возвращает случайную строку заданной длинны состоящую из заданного алфавита.
 	 * @param integer $length - Длина желаемой строки
 	 * @param string $alphabet - Алфавит для генерации (есть дефолтный)
+     * @return string
 	 */
 	public static function Get_Random_String( $length = 10, $alphabet = "Default" )
 	{
@@ -311,9 +312,10 @@ class SF {
 	/**
 	 * Возвращает случайную удобночитаемую строку заданной длинны. (алфавит - маленькие англ буквы)
 	 * @param integer $length - Длина желаемой строки
-	 * @param bool $alphabet - Делать ли первую букву заглавной
+	 * @param bool $Big_first_char - Делать ли первую букву заглавной
+     * @return string
 	 */
-	public static function Get_Random_String_Readable ( $length = 10 , $Big_first_char = true )
+	public static function Get_Random_String_Readable( $length = 10 , $Big_first_char = true )
 	{
 		$c = array('b','c','d','f','g','h','j','k','l','m','n','p','r','s','t','v','w','x','y','z');
 		$v = array('a','e','i','o','u');
@@ -335,18 +337,97 @@ class SF {
 		
 		return $random; 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+    /**
+     *
+     * @param $path_and_name - "/dir/dir2/filename.txt"
+     * @return bool
+     */
+	public static function File_Create123( $path_and_name )
+    {
+
+        if( substr_count( "/" , $path_and_name ) != 0 )
+        {
+
+        }
+
+        $buf = explode("/" , $path_and_name);
+
+        $filename = $buf[count($buf)-1];
+
+        echo $filename;
+
+
+        exit("12345");
+
+        if (is_dir($dir))
+        {
+            echo "Папка существует</br>"; // если есть такая папка
+        } else {
+            $prava = '777';
+            $dir = mkdir( rtrim( $_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$dir, $prava);
+            echo "сделали папку $a</br>";// если нет такой папки
+        }
+
+
+
+
+        if ( file_exists($path_and_name) ) //
+            return true;
+
+
+        $fp = fopen($path_and_name, 'w+'); // Создаем файл
+        fclose($fp);
+        exit("123");
+
+        $tmp = opendir($dir); // Открыли директорию
+        closedir($tmp); // Закрыли директорию
+
+
+
+    }
+
+
+
+
+    public static function File_Create( $file_name )
+    {
+        if ( file_exists($file_name) ) //
+            return;
+
+        $fp = fopen($file_name, 'w+'); // Создаем файл
+        fclose($fp);
+
+    }
+
+    public static function File_Clear( $file_name )
+    {
+        $fp = fopen($file_name, 'w+'); //
+        fclose($fp);
+    }
+
+    public static function File_Put( $file_name , $text )
+    {
+        $fp = fopen($file_name, 'a'); //
+        fwrite($fp, $text);
+        fclose($fp);
+    }
+
+    public static function File_Delete( $file_name )
+    {
+        if ( file_exists($file_name) ) //
+            unlink( $file_name );
+    }
+
+
+/* 'r'  - Чтение ; с начала файла.
+ * 'r+' - Чт/Зап ; с начала файла.
+ * 'w'  - Запись ; с начала файла и усечь файл до нулевой длины. ; Создаем если нет.
+ * 'w+' - Чт/Зап ; с начала файла и усечь файл до нулевой длины. ; Создаем если нет.
+ * 'a'  - Запись ; с конца файла. ; Создаем если нет.
+ * 'a+' - Чт/Зап ; с конца файла. ; Создаем если нет. */
+
 
 } # End class
 
