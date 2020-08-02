@@ -3,7 +3,7 @@
 
 /**
  * Класс со множеством мелких, но полезных методов. Все статичное!!!
- * @method static потом()
+ * @method static 123()
  */
 class SF {
 	
@@ -78,7 +78,7 @@ class SF {
 	
 	/**
 	 * Выведет список переменных и метоодов класса(объекта)
-	 * @param string $target - экземпляр класса для вывода
+	 * @param object $target - экземпляр класса для вывода
 	 * @param string $mode - FUNC / VARS / anychar - Что выводим
 	 */	
 	public static function Print_Class_Func_and_Vars( $target , $mode="any char")
@@ -212,9 +212,9 @@ class SF {
 		
 		if ( $ACTION === "ECHO" )
 			echo $result;
-		else
-			return $result;
-		
+
+		return $result;
+
 	}
 	
 	
@@ -227,10 +227,12 @@ class SF {
 	public static function Get_This_Server_Domain( $Protocol=true, $Port=false)
 	{
 		$Domain = $_SERVER['HTTP_HOST'];
+
 		if ( $Protocol === true)
 		{
-			$prot = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === FALSE ? 'http://' : 'https://';
-			$Domain = $prot.$Domain;
+			$Prot = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === FALSE ? 'http://' : 'https://';
+
+			$Domain = $Prot.$Domain;
 		}
 		
 		
@@ -246,14 +248,14 @@ class SF {
 	 * Получить заголовки с любого сервера
 	 * @param string $URL = адрес сайта, Обязательно с протоколом!
 	 * @param integer $Arr_type = Тип массива на выходе = 1-Асоциативный 0-Одномерный
-	 * @return asoc_array []=>[] , integer -1 (если ошибка)
+	 * @return mixed  assoc_arr[]=>[] , bool false (если ответ был пуст)
 	 */
 	public static function Get_Server_Headers( $URL = "https://yandex.ru" , $Arr_type = 1 )
 	{
 		$Answer = @get_headers( $URL , $Arr_type ); # Без 1 будет не асоциативный(Все в кучу)
 		
 		if( empty($Answer) )
-			return -1;
+			return false;
 		
 		return $Answer; 	
 	}
@@ -401,8 +403,13 @@ class SF {
 
 
 
+    # TODO: Сделать переименовку для файла и папки
 
-
+    /**
+     * Создаст директорию если её нет
+     * @param $path
+     * @return bool
+     */
     public static function Dir_Create( $path )
     {
         if ( is_dir($path) )
@@ -414,7 +421,11 @@ class SF {
         return false;
     }
 
-
+    /**
+     * Проверка существования директории
+     * @param $path
+     * @return bool
+     */
     public static function Dir_Exist( $path )
     {
         if ( is_dir($path) )
@@ -490,8 +501,14 @@ class SF {
 
     }
 
+    ######
 
-
+    /**
+     * Создает пустой файл если его нет
+     * Можно указывать с папками, но они должны существовать "Папка1/Папка2/файл.txt"
+     * @param $file_name
+     * TODO: ДОписать возвращаемые значения
+     */
     public static function File_Create( $file_name )
     {
         if ( file_exists($file_name) ) //
@@ -502,21 +519,36 @@ class SF {
 
     }
 
-    public static function File_Exist( $file_name )
+    /**
+     * Проверяет существование файла
+     * @param $file_path
+     * @return bool
+     */
+    public static function File_Exist( $file_path )
     {
-        if ( file_exists( $file_name) )
-            return true; // если есть такая папка
+        if ( file_exists( $file_path ) )
+            return true;
 
         return false;
 
     }
 
+    /**
+     * Очищает содержимое файла
+     * @param $file_name
+     */
     public static function File_Clear( $file_name )
     {
         $fp = fopen($file_name, 'w+'); //
         fclose($fp);
     }
 
+    /**
+     * Записыват $text в файл. По умолчанию - построчно.
+     * @param $file_name
+     * @param $text
+     * @param bool $new_line
+     */
     public static function File_Put( $file_name , $text , $new_line = true)
     {
         $fp = fopen($file_name, 'a+'); //
@@ -537,6 +569,10 @@ class SF {
         */
     }
 
+    /**
+     * Удаляет файл, если он существует.
+     * @param $file_name
+     */
     public static function File_Delete( $file_name )
     {
         if ( file_exists($file_name) ) //
