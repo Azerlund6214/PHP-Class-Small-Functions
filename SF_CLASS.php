@@ -401,6 +401,44 @@ class SF {
     }
 
 
+	
+	
+	
+	/**
+	 * Метод экранирует все неподобающие символы в присланной строке.
+	 * @param $param - Строка, которую надо экранировать
+	 * @return mixed
+	 */
+	public function Get_escaped_string( $param )
+	{
+		//$escaped = $this->db->real_escape_string( $var );
+		/* https://www.php.net/manual/ru/mysqli.real-escape-string */
+
+
+		//$more_escaped = addcslashes($escaped, '%_');
+
+		return preg_replace('~[\x00\x0A\x0D\x1A\x22\x25\x27\x5C\x5F]~u', '\\\$0', $param);
+
+		/*
+			00 = \0 (NUL)
+			0A = \n
+			0D = \r
+			1A = ctl-Z
+			22 = "
+			25 = %
+			27 = '
+			5C = \
+			5F = _
+			# Note: preg_replace() is in PCRE_UTF8 (UTF-8) mode (`u`).
+		*/
+
+	}
+	
+	
+	
+	
+	
+	
 
 
     # TODO: Сделать переименовку для файла и папки
