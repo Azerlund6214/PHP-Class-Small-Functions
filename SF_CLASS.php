@@ -3,6 +3,7 @@
 
 /**
  * Класс со множеством мелких, но полезных методов. Все статичное!!!
+ * Пишется НЕ ПО PSR !!!
  * @method static 123()
  */
 class SF {
@@ -409,7 +410,7 @@ class SF {
 	 * @param $param - Строка, которую надо экранировать
 	 * @return mixed
 	 */
-	public function Get_escaped_string( $param )
+	public static function Get_Escaped_String( $param )
 	{
 		//$escaped = $this->db->real_escape_string( $var );
 		/* https://www.php.net/manual/ru/mysqli.real-escape-string */
@@ -433,6 +434,60 @@ class SF {
 		*/
 
 	}
+ 
+ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static function Get_User_Browser(  )
+    {
+        return $_SERVER['HTTP_USER_AGENT'];
+        
+    }
+    
+    
+    
+	public static function Get_User_Ip(  )
+    {
+    
+        return filter_input(INPUT_SERVER, 'HTTP_CLIENT_IP',       FILTER_VALIDATE_IP)
+            ?: filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP)
+            ?: $_SERVER['REMOTE_ADDR']
+            ?? '0.0.0.0';
+            
+        /*
+        $client  = @$_SERVER['HTTP_CLIENT_IP'];
+        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+        $remote  = @$_SERVER['REMOTE_ADDR'];
+        
+        if    (filter_var($client,  FILTER_VALIDATE_IP)) $ip = $client;
+        elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
+        else $ip = $remote;
+        */
+        
+        
+        #========================
+        
+        #// не всегда содержит реальный адрес, если клиент зашел через прокси-сервер, то будет адрес прокси-сервера.
+        #$_SERVER['REMOTE_ADDR'] ;
+        
+    
+        //содержат реальные адреса если клиент зашел через прокси-сервер. Адресов может быть несколько, разделенны запятыми.
+        
+        #$_SERVER['HTTP_CLIENT_IP'] ; // хранится глобальный IP пользователя, т.е. его адрес в сети Интернет.
+        
+        #$_SERVER['HTTP_X_FORWARDED_FOR'] ; // если прокси, и если вообще разрешает видить реальный ип
+    
+    }
+	
+	
+	
 	
 	
 	

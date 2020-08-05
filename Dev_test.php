@@ -4,16 +4,12 @@
 	require_once "SF_CLASS.php";
 
 
-	function test($a=123)
-    {
 
-        SF::Echo_Call_Stack( true );
+	echo SF::Get_User_Ip();
 
-    }
-
-test("12345");
-
-exit("123");
+	
+	
+    exit("<hr>123");
 
 
 	sleep(5);
