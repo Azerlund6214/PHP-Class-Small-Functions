@@ -6,6 +6,7 @@
 
 
 	echo SF::Get_User_Ip();
+	echo SF::Get_Ip_Info("94.8.47.115");
 
 	
 	

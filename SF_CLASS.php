@@ -400,10 +400,7 @@ class SF {
             exit("<hr>Выход из Echo_Call_Stack");
 
     }
-
-
-	
-	
+    
 	
 	/**
 	 * Метод экранирует все неподобающие символы в присланной строке.
@@ -447,12 +444,14 @@ class SF {
 	
 	public static function Get_User_Browser(  )
     {
-        return $_SERVER['HTTP_USER_AGENT'];
-        
+        return $_SERVER['HTTP_USER_AGENT']; # Пока так
     }
     
     
-    
+    /**
+     * Возвращает строку с ip пользователя. НЕ ФАКТ что ip настоящий!
+     * @return string
+     */
 	public static function Get_User_Ip(  )
     {
     
@@ -460,17 +459,13 @@ class SF {
             ?: filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP)
             ?: $_SERVER['REMOTE_ADDR']
             ?? '0.0.0.0';
-            
+        
+        
         /*
-        $client  = @$_SERVER['HTTP_CLIENT_IP'];
-        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-        $remote  = @$_SERVER['REMOTE_ADDR'];
-        
-        if    (filter_var($client,  FILTER_VALIDATE_IP)) $ip = $client;
-        elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
-        else $ip = $remote;
+            $client  = @$_SERVER['HTTP_CLIENT_IP'];
+            $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+            $remote  = @$_SERVER['REMOTE_ADDR'];
         */
-        
         
         #========================
         
@@ -485,9 +480,52 @@ class SF {
         #$_SERVER['HTTP_X_FORWARDED_FOR'] ; // если прокси, и если вообще разрешает видить реальный ип
     
     }
-	
-	
-	
+    
+    /**
+     * Получить подробную информацию и локации пользователя
+     * @param string $ip
+     * @return array|string = Массив с данныи ЛИБО строка с ошибкой
+     */
+    public static function Get_Ip_Info( $ip )
+    {
+        # http://cccp-blog.com/koding/opredelenie-goroda-po-ip-v-php
+    
+        if ( ! filter_var($ip, FILTER_VALIDATE_IP))
+            return "BAD IP => $ip";
+    
+        $ip = trim($ip);
+    
+        $ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip )) ;
+        
+        # SF::PRINTER($ip_data);
+        
+        if( $ip_data->geoplugin_status != 200 )
+            return "IP Request error. Status not 200.";
+        
+        
+        $final_data = array(
+            'ip'           => @$ip_data->geoplugin_request,
+            'city'         => @$ip_data->geoplugin_city,
+            'region'       => @$ip_data->geoplugin_region,
+            'region_code'  => @$ip_data->geoplugin_regionCode,
+            'region_name'  => @$ip_data->geoplugin_regionName,
+            
+            'country'      => @$ip_data->geoplugin_countryName,
+            'country_code' => @$ip_data->geoplugin_countryCode,
+            
+            'continent'    => @$ip_data->geoplugin_continentName,
+            
+            'latitude'     => @$ip_data->geoplugin_latitude,
+            'longitude'    => @$ip_data->geoplugin_longitude,
+            'loc_accuracy' => @$ip_data->geoplugin_locationAccuracyRadius,
+        );
+    
+        
+        # SF::PRINTER($final_data);
+        
+        return $final_data;
+        
+    }
 	
 	
 	
