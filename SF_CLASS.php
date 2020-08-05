@@ -534,10 +534,11 @@ class SF {
     
     
     
-    public static function Get_DateTime( "" )
+    public static function Get_DateTime( $format = "Y-m-d H:i:s" )
     {
-    
-    
+        return date( $format );
+        
+        # date_default_timezone_set("Europe/Moscow");
     }
     
     
