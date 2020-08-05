@@ -1,7 +1,5 @@
 <?php
     
-    
-    
     require_once "SF_CLASS.php";
     
     $arr_info = SF::Get_Ip_Info(SF::Get_User_Ip());
@@ -22,6 +20,7 @@
     SF::File_Put($file_name, "=== BEGIN ===");
     SF::File_Put($file_name, "= ".SF::Get_DateTime()." =");
 
+    SF::File_Put($file_name, "= ".SF::Get_User_Browser()." =");
     
     foreach ($arr_info as $key=>$val)
     {
