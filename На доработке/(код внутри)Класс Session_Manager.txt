@@ -1,0 +1,33 @@
+<?php
+class Session
+{
+
+    protected function tryLoadSession()
+    {
+        if (empty($_SESSION)) {
+            session_start();
+        }
+    }
+    
+    public function get($name)
+    {
+        $this->tryLoadSession();
+        
+        if (empty($_SESSION[$name])) {
+            return null;
+        }
+        
+        return $_SESSION[$name];
+    }
+    
+    public function set($name, $value)
+    {
+        $this->tryLoadSession();
+        
+        $_SESSION[$name] = $value;
+    }
+}
+
+$session = new Session;
+$session->get('user_id');
+$session->set('user_id', 100500);
