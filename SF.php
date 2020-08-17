@@ -1,5 +1,7 @@
 <?php
 
+    namespace App\AllMyClasses;
+
 
 /**
  * Класс со множеством мелких, но полезных методов. Все статичное!!!
@@ -7,33 +9,33 @@
  * @method static 123()
  */
 class SF {
-    
-    
-    
+
+
+
     public static $alphabet_eng_big = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static $alphabet_eng_sml = "abcdefghijklmnopqrstuvwxyz";
-    
+
     public static $alphabet_rus_big = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
     public static $alphabet_rus_sml = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-    
+
     public static $alphabet_nums = "0123456789";
-    
-    
-    
+
+
+
     /**
      *
      *
      */
-    
+
     /**
      * Шаблон
      * @param integer $ -
      * @param string $ -
      * @return string
      */
-    
-    
-    
+
+
+
     /**
      * Выводит содержимое любой переменной в хорошо читаемом виде. Основная функция для дебага.
      * @param string $Traget - Что выводим
@@ -43,13 +45,13 @@ class SF {
     public static function PRINTER( $Traget, $MODE = "print_r", $Description = "Default" )
     {
         #TODO Сделать еще принтер массивов в таблицу
-        
+
         echo "<hr color=red>";
         echo "<pre>";
-        
+
         if ( $Description != "Default" )
             echo "Описание: $Description<br>";
-    
+
         switch( $MODE )
         {
             case "print_r":
@@ -58,25 +60,25 @@ class SF {
             case "p":
                             print_r( $Traget );
                             break;
-            
+
             case "var_dump":
             case "var":
             case "V":
             case "v":
                             var_dump( $Traget );
                             break;
-                            
+
             default:
                     echo "SF_PRINTER: case-Дефолт (MODE=$MODE) (Валидные=P или V), Вывожу как var_dump(V) \n\n";
                     var_dump( $Traget );
                     break;
-        
+
         }
 
         echo "</pre>";
         echo "<hr color=red>";
     }
-    
+
     /**
      * Выведет список переменных и метоодов класса(объекта)
      * @param object $target - экземпляр класса для вывода
@@ -84,38 +86,38 @@ class SF {
      */
     public static function Print_Class_Func_and_Vars( $target , $mode="any char")
     {
-        
+
         echo "<pre>";
-        
+
         echo "<hr color=red>";
         echo "<hr color=red>";
-        
+
         switch( $mode )
         {
             case "FUNC":
                 echo "<hr>Все методы класса:";
                 print_r( @get_class_methods( $target ) );
                 break;
-                
+
             case "VARS":
                 echo "<hr>Все ПОЛЯ класса:";
                 print_r( @get_object_vars( $target ) );
                 break;
-                
+
             default:
                     echo "<hr>Все методы класса:";
                     print_r( @get_class_methods( $target ) );
-                    
+
                     echo "<hr color=blue>Все ПОЛЯ класса:";
                     print_r( get_object_vars( $target ) );
         }
-        
+
         echo "<hr color=red>";
         echo "<hr color=red>";
 
         echo "</pre>";
     }
-    
+
     /**
      * Выводит текущее использование памяти PHP
      * @param string $Unit - Единица измерения - G M K B
@@ -129,18 +131,18 @@ class SF {
      */
     public static function Memory_Usage_EchoGet( $Unit = "M", $Action = "Echo", $Peak = false, $Real = false)
     {
-        
+
         if( ! is_bool($Peak) || ! is_bool($Real) )
         {
             echo "<br>Не BOOL параметры Peak($Peak) или Real($Real).(Return false)";
             return false;
         }
-        
+
         if( $Peak )
             $ram = memory_get_peak_usage($Real);
         else
             $ram = memory_get_usage($Real);
-        
+
         switch($Action)
         {
             case "Echo":
@@ -156,7 +158,7 @@ class SF {
                         case "B": 	echo "<br>$MSG".(double)$ram                . "  Байт"; return true;
                         default: echo "<br>Ошибка в единице измерения.(Return false)"; return false;
                     }
-        
+
             case "Get":
             case "get":
             case "G":
@@ -169,16 +171,16 @@ class SF {
                         case "B": 	return (double)$ram; break;
                         default: echo "<br>Ошибка в единице измерения(Return false)."; return false;
                     }
-        
+
             default:
                     echo "<br>Неправильная команда(EchoGet)(Return false).";
                     return false;
-        
+
         }# End switch
-        
+
     }#End Func
-    
-    
+
+
     /**
      * Выводит путь до файла, который вызвал функцию (путь от корня САЙТА (НЕ Файловой системы))
      * @param string $TARGET = FILE / FOLDER
@@ -191,14 +193,14 @@ class SF {
         # Старый рабочий вариант:  (PATH = __FILE__ при вызове этой функции)
         #$PATH = str_replace ( "\\", "/", $PATH); # Нужно только для локалки, на хосте все слеши сразу правильные
         #echo str_replace ( $_SERVER['DOCUMENT_ROOT'] , "" , $PATH );
-        
+
         if ( $TARGET === "FILE" )
         {
             $file_caller = debug_backtrace()[0]['file']; # ПОЛНЫЙ путь до вызвавшего ФАЙЛА
-            
+
             $file_caller = str_replace ( "\\", "/", $file_caller); # Нужно только для локалки, на хостинге все слеши сразу правильные
             $result = str_replace ( $_SERVER['DOCUMENT_ROOT'] , "" , $file_caller );
-            
+
         }
         else
         {
@@ -206,19 +208,19 @@ class SF {
             $file_dir = str_replace ( "\\", "/", $DIR); # Нужно только для локалки, на хосте все слеши сразу правильные
             $result = str_replace ( $_SERVER['DOCUMENT_ROOT'] , "" , $file_dir );
         }
-        
-        
+
+
         $result = substr($result,1); # Обрезаем слеш в начале (Чтоб не ругался хостинг)
-        
-        
+
+
         if ( $ACTION === "ECHO" )
             echo $result;
 
         return $result;
 
     }
-    
-    
+
+
     /**
      * Получить строку c доменом этого сервера - "https://www.yandex123.ru:80", "http://localhost:80"
      * @param bool $Protocol = Добавлять ли протокол
@@ -235,16 +237,16 @@ class SF {
 
             $Domain = $Prot.$Domain;
         }
-        
-        
+
+
         if ( $Port === true)
             $Domain = $Domain.":".$_SERVER['SERVER_PORT'];
-        
-        
+
+
         return $Domain;
     }
-    
-    
+
+
     /**
      * Получить заголовки с любого сервера
      * @param string $URL = адрес сайта, Обязательно с протоколом!
@@ -254,14 +256,14 @@ class SF {
     public static function Get_Server_Headers( $URL = "https://yandex.ru" , $Arr_type = 1 )
     {
         $Answer = @get_headers( $URL , $Arr_type ); # Без 1 будет не асоциативный(Все в кучу)
-        
+
         if( empty($Answer) )
             return false;
-        
+
         return $Answer;
     }
-    
-    
+
+
     /**
      * Получить заголовки с любого сервера
      * @param string $URL = адрес сайта, Обязательно с протоколом!
@@ -275,17 +277,17 @@ class SF {
         $c = curl_exec($ch);
         return curl_getinfo($ch, CURLINFO_HTTP_CODE);
         // */
-        
+
         $Answer = @get_headers( $URL , 1 ); # Без 1 будет не асоциативный(Все в кучу)
-        
+
         if( empty($Answer) )
             return false;
-        
+
         return substr($Answer[0], 9, 3 ); // HTTP/1.1 404 Not Found
-        
+
     }
-    
-    
+
+
     /**
      * Возвращает случайную строку заданной длинны состоящую из заданного алфавита.
      * @param integer $length - Длина желаемой строки
@@ -294,24 +296,24 @@ class SF {
      */
     public static function Get_Random_String( $length = 10, $alphabet = "Default" )
     {
-        
+
         if ( $alphabet === "Default" )
             $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        
+
         srand((double)microtime()*1000000); # Увеличиваем рандомность
-        
+
         $strlength = strlen($alphabet);
-        
+
         $random = '';
-        
+
         # Альтернатива - $random = substr(str_shuffle($alphabet), 0, $length);
         for ($i = 0; $i < $length; $i++)
             $random .= $alphabet[rand(0, $strlength - 1)];
-        
+
         return $random;
     }
-    
-    
+
+
     /**
      * Возвращает случайную удобночитаемую строку заданной длинны. (алфавит - маленькие англ буквы)
      * @param integer $length - Длина желаемой строки
@@ -322,22 +324,22 @@ class SF {
     {
         $c = array('b','c','d','f','g','h','j','k','l','m','n','p','r','s','t','v','w','x','y','z');
         $v = array('a','e','i','o','u');
-        
+
         srand((double)microtime()*1000000); # Увеличиваем рандомность
-        
+
         $max = $length / 2;
-        
+
         $random = '';
-        
+
         for ($i = 1; $i <= $max; $i++)
         {
             $random .= $c[rand(0,19)];
             $random .= $v[rand(0,4)];
         }
-        
+
         if( $Big_first_char )
                 $random[0] = strtoupper( $random[0] );
-        
+
         return $random;
     }
 
@@ -400,8 +402,8 @@ class SF {
             exit("<hr>Выход из Echo_Call_Stack");
 
     }
-    
-    
+
+
     /**
      * Метод экранирует все неподобающие символы в присланной строке.
      * @param $param - Строка, которую надо экранировать
@@ -431,56 +433,140 @@ class SF {
         */
 
     }
- 
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
     public static function Get_User_Browser(  )
     {
         return $_SERVER['HTTP_USER_AGENT']; # Пока так
     }
-    
-    
+
+
+
+    public static function Get_Parsed_User_Agent( $u_agent = "" )
+    {
+
+        if ($u_agent === "")
+            $u_agent = $_SERVER['HTTP_USER_AGENT'];
+
+
+
+        $bname = 'Unknown'; $ub = "Unknown";
+        $platform = 'Unknown';
+        $version = "";
+
+        //Сначала определяем платформу?
+        if (preg_match('/linux/i', $u_agent)) {
+            $platform = 'Linux';
+        }elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
+            $platform = 'Mac';
+        }elseif (preg_match('/windows|win32/i', $u_agent)) {
+            $platform = 'Windows';
+        }
+
+        // Далее получаем имя агента пользователя
+        if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)) {
+            $bname = 'Internet Explorer';
+            $ub = "MSIE";
+        } elseif(preg_match('/Firefox/i',$u_agent)) {
+            $bname = 'Mozilla Firefox';
+            $ub = "Firefox";
+        } elseif(preg_match('/Chrome/i',$u_agent)) {
+            $bname = 'Google Chrome';
+            $ub = "Chrome";
+        }elseif(preg_match('/Safari/i',$u_agent)) {
+            $bname = 'Apple Safari';
+            $ub = "Safari";
+        }elseif(preg_match('/Opera/i',$u_agent)) {
+            $bname = 'Opera';
+            $ub = "Opera";
+        }elseif(preg_match('/Netscape/i',$u_agent)) {
+            $bname = 'Netscape';
+            $ub = "Netscape";
+        }
+
+        // в конце получаем корректный номер версии
+        $known = array('Version', $ub, 'other');
+        $pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+
+        if (!preg_match_all($pattern, $u_agent, $matches)) {
+            // совпадающие номера не были найдены, просто продолжаем
+        }
+
+        // смотрим, сколько у нас есть
+        $i = count($matches['browser']);
+
+        if ($i != 1) {
+            // мы получим два раза, так как еще не использовали аргумент 'other'
+
+
+            //проверяем указана ли версия до или после имени
+            if (strripos($u_agent,"Version") < strripos($u_agent,$ub)){
+                $version= $matches['version'][0];
+            }else {
+                @$version= $matches['version'][1];
+            }
+        }else {
+            $version= $matches['version'][0];
+        }
+
+        // проверяем, получили ли мы номер
+        if ($version == null || $version == "") { $version = "?"; }
+
+        return array(
+            'userAgent' => $u_agent,
+            'name'      => $bname,
+            'version'   => $version,
+            'platform'  => $platform,
+            'pattern'   => $pattern
+        );
+
+
+    }
+
+
+
     /**
      * Возвращает строку с ip пользователя. НЕ ФАКТ что ip настоящий!
      * @return string
      */
     public static function Get_User_Ip(  )
     {
-    
+
         return filter_input(INPUT_SERVER, 'HTTP_CLIENT_IP',       FILTER_VALIDATE_IP)
             ?: filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP)
             ?: $_SERVER['REMOTE_ADDR']
             ?? '0.0.0.0';
-        
-        
+
+
         /*
             $client  = @$_SERVER['HTTP_CLIENT_IP'];
             $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
             $remote  = @$_SERVER['REMOTE_ADDR'];
         */
-        
+
         #========================
-        
+
         #// не всегда содержит реальный адрес, если клиент зашел через прокси-сервер, то будет адрес прокси-сервера.
         #$_SERVER['REMOTE_ADDR'] ;
-        
-    
+
+
         //содержат реальные адреса если клиент зашел через прокси-сервер. Адресов может быть несколько, разделенны запятыми.
-        
+
         #$_SERVER['HTTP_CLIENT_IP'] ; // хранится глобальный IP пользователя, т.е. его адрес в сети Интернет.
-        
+
         #$_SERVER['HTTP_X_FORWARDED_FOR'] ; // если прокси, и если вообще разрешает видить реальный ип
-    
+
     }
-    
+
     /**
      * Получить подробную информацию и локации пользователя
      * @param string $ip
@@ -489,60 +575,60 @@ class SF {
     public static function Get_Ip_Info( $ip )
     {
         # http://cccp-blog.com/koding/opredelenie-goroda-po-ip-v-php
-    
+
         if ( ! filter_var($ip, FILTER_VALIDATE_IP))
             return "BAD IP => $ip";
-    
+
         $ip = trim($ip);
-    
+
         $ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip )) ;
-        
+
          #SF::PRINTER($ip_data);
-        
-        
+
+
         if( ! $ip_data )
             return "IP Request error. Не удалось сделать запрос к серверу. Ответ не получен.";
-        
+
         if( $ip_data->geoplugin_status != 200 && $ip_data->geoplugin_status != 206 )
             return "IP Request error. Status not 200. $ip => ". $ip_data->geoplugin_status;
-        
-        
+
+
         $final_data = array(
             'ip'           => @$ip_data->geoplugin_request,
             'city'         => @$ip_data->geoplugin_city,
             'region'       => @$ip_data->geoplugin_region,
             'region_code'  => @$ip_data->geoplugin_regionCode,
             'region_name'  => @$ip_data->geoplugin_regionName,
-            
+
             'country'      => @$ip_data->geoplugin_countryName,
             'country_code' => @$ip_data->geoplugin_countryCode,
-            
+
             'continent'    => @$ip_data->geoplugin_continentName,
-            
+
             'latitude'     => @$ip_data->geoplugin_latitude,
             'longitude'    => @$ip_data->geoplugin_longitude,
             'loc_accuracy' => @$ip_data->geoplugin_locationAccuracyRadius,
         );
-    
-        
+
+
         # SF::PRINTER($final_data);
-        
+
         return $final_data;
-        
+
     }
-    
-    
-    
-    
+
+
+
+
     public static function Get_DateTime( $format = "Y-m-d H:i:s" )
     {
         return date( $format );
-        
+
         # date_default_timezone_set("Europe/Moscow");
     }
-    
-    
-    
+
+
+
 
 
     # TODO: Сделать переименовку для файла и папки
